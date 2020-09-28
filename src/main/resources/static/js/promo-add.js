@@ -45,13 +45,13 @@ $('#form-add-promo').submit(function(evt){
 		},
 		statusCode: {
 			422: function(xhr) {
-				console.log('status error:', xhr.status);
+				console.log('status error', xhr.status);
 				var errors = $.parseJSON(xhr.responseText);
-				$.each(errors, function(key, val){
-					$("#" + key).addClass("is-invalid");
+				$.each(errors, function(key, val) {
+					$("#" + key).addClass("is-invalid"); //adiciona borda vermelha
 					$("#error-" + key)
-						.addClass("invalid-feedback")
-						.append("<span class='error-span'>" + val + "</span>")
+						.addClass("invalid-feedback") //retorna texto vemelho
+						.append("<span class= 'error-span'>"+ val + "</span>")
 				});
 			}
 		},
@@ -59,11 +59,11 @@ $('#form-add-promo').submit(function(evt){
 		error: function(xhr){
 			console.log("> error: ", xhr.responseText);
 			$("#alert").addClass("alert alert-danger").text("Houve um erro! Promoção não pôde ser cadastrada. Por favor limpe o formulário e tente cadastrar novamente.");
-			
-			$(".form-control").each(function(){
-				$(".form-control").prop("disabled",true)
-			});
-			$("#btn").prop("disabled",true);
+//			
+//			$(".form-control").each(function(){
+//				$(".form-control").prop("disabled",true)
+//			});
+//			$("#btn").prop("disabled",true);
 		},
 		complete: function(){
 			$("#loader-form").fadeOut(800,function(){

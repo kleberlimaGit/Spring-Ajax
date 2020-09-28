@@ -33,64 +33,63 @@ import com.mballem.demoajax.repository.PromocaoRepository;
 public class PromocaoController {
 
 	private static Logger log = LoggerFactory.getLogger(PromocaoController.class);
-	
+
 	@Autowired
 	private PromocaoRepository promocaoRepository;
-	
+
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
+
 	@ModelAttribute("categorias")
-	public List<Categoria> getCategoria(){
-		
+	public List<Categoria> getCategoria() {
+
 		return categoriaRepository.findAll();
 	}
-	
-	
-	//======================================================LISTAR OFERTAS======================================================
+
+	// ======================================================LISTAROFERTAS======================================================
 	@GetMapping("/list")
 	public String listarOfertas(ModelMap model) {
-		Sort sort = Sort.by(Sort.Direction.DESC,"dtCadastro");
+		Sort sort = Sort.by(Sort.Direction.DESC, "dtCadastro");
 		PageRequest pageRequest = PageRequest.of(0, 8, sort);
 		model.addAttribute("promocoes", promocaoRepository.findAll(pageRequest));
-		
+
 		return "promo-list";
 	}
-	
+
 	@GetMapping("/list/ajax")
-	public String listarCards(@RequestParam (name = "page", defaultValue="1") int page,  ModelMap model) {
-		Sort sort = Sort.by(Sort.Direction.DESC,"dtCadastro");
+	public String listarCards(@RequestParam(name = "page", defaultValue = "1") int page, ModelMap model) {
+		Sort sort = Sort.by(Sort.Direction.DESC, "dtCadastro");
 		PageRequest pageRequest = PageRequest.of(page, 8, sort);
 		model.addAttribute("promocoes", promocaoRepository.findAll(pageRequest));
-		
+
 		return "promo-card";
 	}
-	
-	//======================================================ADD OFERTAS======================================================
-	
-	
-	@GetMapping("/add")
-	public String abrirCadastro() {
-		
-		return "promo-add";
-	}
-	
+
+	// ======================================================ADD OFERTAS======================================================
+
 	@PostMapping("/save")
-	public ResponseEntity<?> salvarPromocao(@Valid Promocao promocao, BindingResult result){
-		
+	public ResponseEntity<?> salvarPromocao(@Valid Promocao promocao, BindingResult result) {
+
 		if (result.hasErrors()) {
-			
 			Map<String, String> errors = new HashMap<>();
+
 			for (FieldError error : result.getFieldErrors()) {
 				errors.put(error.getField(), error.getDefaultMessage());
 			}
-			
 			return ResponseEntity.unprocessableEntity().body(errors);
 		}
-		
-		log.info("Promocao {}", promocao.toString());
+
+		log.info("Promoção {}", promocao.toString());
 		promocao.setDtCadastro(LocalDateTime.now());
 		promocaoRepository.save(promocao);
+
 		return ResponseEntity.ok().build();
 	}
+
+	@GetMapping("/add")
+	public String abrirCadastro() {
+
+		return "promo-add";
+	}
+
 }
