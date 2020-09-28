@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,11 +46,37 @@ public class PromocaoController {
 
 		return categoriaRepository.findAll();
 	}
+	
+	@GetMapping("/site/list")
+	public String listarPorSite(@RequestParam("site") String site, ModelMap model) {
+			Sort sort = new Sort(Sort.Direction.DESC, "likes");
+			PageRequest pageRequest = PageRequest.of(0, 8, sort);
+			model.addAttribute("promocoes", promocaoRepository.findBySite(site, pageRequest));
+		
+		return "promo-card";
+	}
+	
+	// ======================================================AUTOCOMPLETE======================================================
+	@GetMapping("site")
+	public ResponseEntity<?> autocompleteByTermo(@RequestParam("termo") String termo){
+		List<String> sites = promocaoRepository.findSitesByTermo(termo);
+		return ResponseEntity.ok(sites);
+	}
 
-	// ======================================================LISTAROFERTAS======================================================
+	// ======================================================ADD LIKES======================================================
+	
+	@PostMapping("/like/{id}")
+	public ResponseEntity<?> adicionarLikes(@PathVariable("id") Long id){
+		promocaoRepository.updateSomarLikes(id);
+		
+		int likes = promocaoRepository.findLikesById(id);
+		return ResponseEntity.ok(likes);
+	}
+	
+	// ======================================================LISTAR OFERTAS======================================================
 	@GetMapping("/list")
 	public String listarOfertas(ModelMap model) {
-		Sort sort = Sort.by(Sort.Direction.DESC, "dtCadastro");
+		Sort sort = new Sort(Sort.Direction.DESC, "likes");
 		PageRequest pageRequest = PageRequest.of(0, 8, sort);
 		model.addAttribute("promocoes", promocaoRepository.findAll(pageRequest));
 
@@ -57,10 +84,16 @@ public class PromocaoController {
 	}
 
 	@GetMapping("/list/ajax")
-	public String listarCards(@RequestParam(name = "page", defaultValue = "1") int page, ModelMap model) {
-		Sort sort = Sort.by(Sort.Direction.DESC, "dtCadastro");
+	public String listarCards(@RequestParam(name = "page", defaultValue = "1") int page, 
+							  @RequestParam(name = "site", defaultValue = "") String site, ModelMap model) {
+		Sort sort = new Sort(Sort.Direction.DESC, "likes");
 		PageRequest pageRequest = PageRequest.of(page, 8, sort);
-		model.addAttribute("promocoes", promocaoRepository.findAll(pageRequest));
+		if(site.isEmpty()) {
+			model.addAttribute("promocoes", promocaoRepository.findAll(pageRequest));
+		}else {
+			model.addAttribute("promocoes", promocaoRepository.findBySite(site,pageRequest));
+		}
+		
 
 		return "promo-card";
 	}

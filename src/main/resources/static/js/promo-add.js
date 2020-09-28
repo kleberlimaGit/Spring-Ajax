@@ -21,6 +21,17 @@ $('#form-add-promo').submit(function(evt){
 		beforeSend: function(){
 			$("#form-add-promo").hide();
 			$("#loader-form").addClass("loader-G").show();
+			
+			$("#alert").removeClass("alert-danger")
+			
+			// removendo as mensagens
+			$("span").closest('.error-span').remove();
+			
+			//remover as bordas vermelhas
+			$("#categoria").removeClass("is-invalid");
+			$("#preco").removeClass("is-invalid");
+			$("#linkPromocao").removeClass("is-invalid");
+			$("#titulo").removeClass("is-invalid");
 		
 		},
 		success:function(){
@@ -58,7 +69,7 @@ $('#form-add-promo').submit(function(evt){
 		
 		error: function(xhr){
 			console.log("> error: ", xhr.responseText);
-			$("#alert").addClass("alert alert-danger").text("Houve um erro! Promoção não pôde ser cadastrada. Por favor limpe o formulário e tente cadastrar novamente.");
+			$("#alert").addClass("alert alert-danger").text("Houve um erro! Promoção não pôde ser cadastrada.");
 //			
 //			$(".form-control").each(function(){
 //				$(".form-control").prop("disabled",true)
@@ -108,6 +119,16 @@ $("#linkPromocao").on('change', function() {
 				$("#linkImagem").attr("src", "https://images.unsplash.com/photo-1577538928305-3807c3993047?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
 				$("#linkImagem").css("opacity","0.7");
 				$("#loader-img").addClass("loader");
+				
+				// removendo as mensagens
+				$("span").closest('.error-span').remove();
+				
+				//remover as bordas vermelhas
+				$("#categoria").removeClass("is-invalid");
+				$("#preco").removeClass("is-invalid");
+				$("#linkPromocao").removeClass("is-invalid");
+				$("#titulo").removeClass("is-invalid");
+				
 			},
 			success: function(data) {
 				$("#titulo").val(data.title);
