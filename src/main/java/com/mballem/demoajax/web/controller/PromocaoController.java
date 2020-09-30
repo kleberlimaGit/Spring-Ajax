@@ -31,6 +31,7 @@ import com.mballem.demoajax.repository.CategoriaRepository;
 import com.mballem.demoajax.repository.PromocaoRepository;
 import com.mballem.demoajax.service.PromocaoDataTablesService;
 
+
 @Controller
 @RequestMapping("/promocao")
 public class PromocaoController {
@@ -69,6 +70,13 @@ public class PromocaoController {
 	public ResponseEntity<?> datatables(HttpServletRequest request){
 		Map<String,Object> data = new PromocaoDataTablesService().execute(promocaoRepository, request);
 		return ResponseEntity.ok(data);
+	}
+	
+	// ======================================================DELETE======================================================
+	@GetMapping("/delete/{id}")
+	public ResponseEntity<?> excluirPromocao(@PathVariable("id") Long id){
+		promocaoRepository.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 	
 	// ======================================================AUTOCOMPLETE======================================================
