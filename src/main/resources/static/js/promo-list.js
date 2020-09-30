@@ -76,7 +76,6 @@ $("#autocomplete-input").autocomplete({
 });
 
 $("#autocomplete-submit").on("click", function(){
-	console.log("cliquei")
 	var site = $("#autocomplete-input").val();
 	console.log(site)
 	$.ajax({

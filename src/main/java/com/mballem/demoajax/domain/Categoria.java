@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "categorias")
@@ -23,6 +25,7 @@ public class Categoria implements Serializable {
 	@Column(name = "titulo", nullable = false, unique=true)
 	private String titulo;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "categoria")
 	private List<Promocao> promocoes;
 

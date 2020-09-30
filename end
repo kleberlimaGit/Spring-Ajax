@@ -1,0 +1,35 @@
+[33mcommit 85200d09fae12188c8b89f18fe753958a6a5c1d9[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: kleber lima <mov_kleber@hotmail.com>
+Date:   Mon Sep 28 18:03:05 2020 -0300
+
+    Inicio DataTables
+
+[33mcommit caabc9ef12d3cb89105c9b065512498cb2cc66ac[m
+Author: kleber lima <mov_kleber@hotmail.com>
+Date:   Mon Sep 28 16:15:23 2020 -0300
+
+    Pesquisando os produtos por nome de empresa
+
+[33mcommit 99ff7977b4b161bb185a5f5c119c517276e04f2f[m
+Author: kleber lima <mov_kleber@hotmail.com>
+Date:   Mon Sep 28 11:59:35 2020 -0300
+
+    Listando Erros
+
+[33mcommit 0044cf3602edcfb7ef3b087bda18d95acb061618[m
+Author: Kleber Lima <mov_kleber@hotmail.com>
+Date:   Sun Sep 27 23:50:51 2020 -0300
+
+    Listagem de promoçoes
+
+[33mcommit b2fbaa4eb5edec3e9d4ddf51a0fe0169caa1220d[m
+Author: kleber lima <mov_kleber@hotmail.com>
+Date:   Thu Sep 24 18:51:04 2020 -0300
+
+    repositorys e consulta as categorias
+
+[33mcommit 13ce2bd08d1d4fca0a1ce6cfde6554b73e705603[m
+Author: Kleber Lima <mov_kleber@hotmail.com>
+Date:   Wed Sep 23 23:55:53 2020 -0300
+
+    Inicio do projeto
