@@ -35,7 +35,7 @@ public class Promocao implements Serializable{
 	private String titulo;
 	
 	@NotBlank(message = "O link da promoção é requerido")
-	@Column(name="link_promocao", nullable=false)
+	@Column(name="link_promocao", nullable=false, columnDefinition = "TEXT")
 	private String linkPromocao;
 	
 	@Column(name="site_promocao", nullable=false)

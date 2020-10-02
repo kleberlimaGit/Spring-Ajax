@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mballem.demoajax.domain.Categoria;
 import com.mballem.demoajax.domain.Promocao;
+import com.mballem.demoajax.dto.PromocaoDTO;
 import com.mballem.demoajax.repository.CategoriaRepository;
 import com.mballem.demoajax.repository.PromocaoRepository;
 import com.mballem.demoajax.service.PromocaoDataTablesService;
@@ -52,7 +53,7 @@ public class PromocaoController {
 	
 	@GetMapping("/site/list")
 	public String listarPorSite(@RequestParam("site") String site, ModelMap model) {
-			Sort sort = new Sort(Sort.Direction.DESC, "likes");
+			Sort sort = new Sort(Sort.Direction.DESC, "dtCadastro");
 			PageRequest pageRequest = PageRequest.of(0, 8, sort);
 			model.addAttribute("promocoes", promocaoRepository.findBySite(site, pageRequest));
 		
@@ -99,7 +100,7 @@ public class PromocaoController {
 	// ======================================================LISTAR OFERTAS======================================================
 	@GetMapping("/list")
 	public String listarOfertas(ModelMap model) {
-		Sort sort = new Sort(Sort.Direction.DESC, "likes");
+		Sort sort = new Sort(Sort.Direction.DESC, "dtCadastro");
 		PageRequest pageRequest = PageRequest.of(0, 8, sort);
 		model.addAttribute("promocoes", promocaoRepository.findAll(pageRequest));
 
@@ -109,7 +110,7 @@ public class PromocaoController {
 	@GetMapping("/list/ajax")
 	public String listarCards(@RequestParam(name = "page", defaultValue = "1") int page, 
 							  @RequestParam(name = "site", defaultValue = "") String site, ModelMap model) {
-		Sort sort = new Sort(Sort.Direction.DESC, "likes");
+		Sort sort = new Sort(Sort.Direction.DESC, "dtCadastro");
 		PageRequest pageRequest = PageRequest.of(page, 8, sort);
 		if(site.isEmpty()) {
 			model.addAttribute("promocoes", promocaoRepository.findAll(pageRequest));
@@ -147,5 +148,37 @@ public class PromocaoController {
 
 		return "promo-add";
 	}
+	// ======================================================Editar promo======================================================
+	@GetMapping("/edit/{id}")
+	public ResponseEntity<?> preEditarPromocao(@PathVariable("id") Long id){
+		Promocao promo = promocaoRepository.findById(id).get();
+		return ResponseEntity.ok(promo);
+	}
+	
+	
+	
+	@PostMapping("/edit")
+	public ResponseEntity<?> editarPromocao(@Valid PromocaoDTO dto, BindingResult result){
+		if(result.hasErrors()) {
+			Map<String, String> errors = new HashMap<>();
+			for(FieldError error : result.getFieldErrors()) {
+				errors.put(error.getField(), error.getDefaultMessage());
+			}
+			return ResponseEntity.unprocessableEntity().body(errors);
+			
+		}
+		
+		Promocao promo = promocaoRepository.findById(dto.getId()).get();
+		promo.setCategoria(dto.getCategoria());
+		promo.setDescricao(dto.getDescricao());
+		promo.setLinkImagem(dto.getLinkImagem());
+		promo.setPreco(dto.getPreco());
+		promo.setTitulo(dto.getTitulo());
+		
+		promocaoRepository.save(promo);
+		
+		return ResponseEntity.ok().build();
+	}
+	
 
 }
